@@ -1,0 +1,38 @@
+services:
+  memcached:
+    image: "memcached:1.6.36-alpine"
+    container_name: memcached
+    restart: unless-stopped
+    env_file: env.ini
+    networks:
+      - internal-network
+    ports:
+      - "11211:11211"
+  postgres-14-13-sei-5:
+    image: "registry.tre-pa.jus.br/sds/apps/sei/infra/postgres/postgres-14.13-sei-5:1.0.4"
+    container_name: postgres-14-13-sei-5
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - internal-network
+  sei5-alpine:
+    image: "sei5-alpine:1.0.0"
+    container_name: sei5-alpine
+    restart: unless-stopped
+    env_file: env.ini
+    depends_on:
+      - postgres-14-13-sei-5
+    ports:
+      - "8000:8000"
+    networks:
+      - internal-network
+    links:
+      - memcached:memcached
+#      - solr:solr
+#      - jodconverter:jodconverter
+networks:
+  internal-network:
+

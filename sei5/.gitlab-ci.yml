@@ -1,0 +1,26 @@
+default:
+  tags:
+    - k8s-runner
+
+variables:
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_HOST: tcp://localhost:2375
+  DOCKER_DRIVER: overlay2
+  DOCKER_OPTS: "--insecure-registry registry.tre-pa.jus.br"
+
+stages:
+  - build
+
+build:
+  image: docker:20.10.17
+  stage: build
+  services:
+    - name: docker:20.10.17-dind
+  script:
+    - VERSION=${CI_COMMIT_TAG#v}
+    - until docker info > /dev/null 2>&1; do echo "Aguardando Docker..."; sleep 2; done
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker build --network host -t $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$VERSION .
+    - docker push $CI_REGISTRY/$CI_PROJECT_NAMESPACE/$CI_PROJECT_NAME:$VERSION
+  only:
+    - tags
