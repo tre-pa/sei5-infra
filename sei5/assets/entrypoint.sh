@@ -10,16 +10,6 @@ chown -R apache:apache /var/sei/arquivos
 #!/bin/sh
 set -e
 
-# Defina o caminho que espera ser montado
-VOLUME_PATH="/opt"
-
-# Verifica se o diretório está vazio (não montado)
-if [ ! -d "$VOLUME_PATH" ] || [ -z "$(ls -A $VOLUME_PATH)" ]; then
-  echo "Erro: O volume em '$VOLUME_PATH' não foi montado corretamente."
-  echo "Use: docker run -v /caminho/src:/opt <imagem>"
-  exit 1
-fi
-
 php -r "
     require_once '/opt/sip/web/Sip.php';
 
@@ -47,4 +37,3 @@ php -r "
 " || exit 1
 
 exec "$@"
-

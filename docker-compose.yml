@@ -1,4 +1,24 @@
 services:
+  solr:
+    image: "solr:8.2.0"
+    container_name: solr
+    restart: unless-stopped
+    networks:
+      - internal-network
+    ports:
+      - "8983:8983"
+    volumes:
+      - ./solr_dados/sei-protocolos:/dados/sei-protocolos/conteudo
+      - ./solr_dados/sei-bases-conhecimento:/dados/sei-bases-conhecimento/conteudo
+      - ./solr_dados/sei-publicacoes:/dados/sei-publicacoes/conteudo
+  jodconverter:
+    image: "jodconverter-tomcat:2.2.2"
+    container_name: jodconverter
+    restart: unless-stopped
+    networks:
+      - internal-network
+    ports:
+      - "8080:8080"
   memcached:
     image: "memcached:1.6.36-alpine"
     container_name: memcached
@@ -19,7 +39,7 @@ services:
     networks:
       - internal-network
   sei5-alpine:
-    image: "sei5-alpine:1.0.0"
+    image: "docker.io/library/sei5-alpine:1.0.0"
     container_name: sei5-alpine
     restart: unless-stopped
     env_file: env.ini
@@ -27,12 +47,17 @@ services:
       - postgres-14-13-sei-5
     ports:
       - "8000:8000"
+    volumes:
+      - ./docker/src/:/opt
+      - ./docker/config/ConfiguracaoSEI.php:/opt/sei/config/ConfiguracaoSEI.php:ro
+      - ./docker/config/ConfiguracaoSip.php:/opt/sip/config/ConfiguracaoSip.php:ro
     networks:
       - internal-network
     links:
       - memcached:memcached
-#      - solr:solr
-#      - jodconverter:jodconverter
+      - solr:solr
+      - jodconverter:jodconverter
+    command: ["/bin/sh", "-c", "crond && httpd -DFOREGROUND"]
 networks:
   internal-network:
 
