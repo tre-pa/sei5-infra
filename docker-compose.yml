@@ -28,27 +28,31 @@ services:
       - internal-network
     ports:
       - "11211:11211"
-  postgres-14-13-sei-5:
-    image: "registry.tre-pa.jus.br/sds/apps/sei/infra/postgres/postgres-14.13-sei-5:1.0.4"
-    container_name: postgres-14-13-sei-5
+  sei5-postgres:
+    image: "sei5-postgres:1.0.0"
+    container_name: sei5-postgres
     restart: always
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./docker/init-db/:/sql
     networks:
       - internal-network
   sei5-alpine:
-    image: "docker.io/library/sei5-alpine:1.0.0"
+    image: "sei5-alpine:1.0.0"
     container_name: sei5-alpine
     restart: unless-stopped
     env_file: env.ini
     depends_on:
-      - postgres-14-13-sei-5
+      - sei5-postgres
     ports:
       - "8000:8000"
     volumes:
-      - ./docker/src/:/opt
+      - ./docker/src/sei:/opt/sei
+      - ./docker/src/sip:/opt/sip
+      - ./docker/src/infra:/opt/infra
       - ./docker/config/ConfiguracaoSEI.php:/opt/sei/config/ConfiguracaoSEI.php:ro
       - ./docker/config/ConfiguracaoSip.php:/opt/sip/config/ConfiguracaoSip.php:ro
     networks:
