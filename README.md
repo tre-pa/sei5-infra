@@ -48,6 +48,26 @@ docker build -t solr:8.2.0 ./solr
 docker build -t jodconverter-tomcat:2.2.2 ./jod
 ```
 
+### 6 **Build da imagem do PostgreSQL**
+
+O build da imagem deve ser feito a partir da raiz do projeto. O Dockerfile está localizado na pasta `postgres`, então execute:
+
+```sh
+docker build -t sei5-postgres:1.0.0 -f postgres/Dockerfile .
+```
+
+## **Executando o Container**
+
+Para iniciar o container do PostgreSQL com as configurações necessárias, execute o comando abaixo. Esse comando define a senha do banco de dados, expõe a porta padrão do PostgreSQL e carrega automaticamente scripts de inicialização.
+
+```sh
+docker run -d --name sei5-postgres \
+  -p 5432:5432 \
+  -e POSTGRES_PASSWORD=postgres \
+  -v ./init:/docker-entrypoint-initdb.d \
+  sei5-postgres:1.0.0
+```
+
 ## Configuração do Banco de Dados
 
 Abaixo estão as principais variáveis de ambiente utilizadas para configurar o banco de dados.
