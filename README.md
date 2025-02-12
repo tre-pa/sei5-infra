@@ -8,6 +8,8 @@ Antes de iniciar a instalação, certifique-se de ter os seguintes requisitos at
 
 - **Docker** instalado
 - **Docker Compose** instalado
+- **Código fonte** do SEI (sei, sip, infra)
+- **Arquivos de dump** do PostgreSQL
 
 ## Como subir o ambiente SEI5:
 
