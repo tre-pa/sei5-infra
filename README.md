@@ -86,6 +86,8 @@ docker/src/
 └── infra/
 ```
 
+**Importante:** O código fonte deve ser copiado com encoding **ISO-8859-1** para garantir a compatibilidade de caracteres especiais e evitar problemas de codificação durante a execução.
+
 ## 9. Inserir o SQL dump do postgres no diretório **docker/config/init-db**
 
 ```sh
@@ -93,9 +95,6 @@ ddocker/init-db/
 ├── init-db/sei_5_0_0.sql
 └── docker/init-db/sip_3_2_0.sql
 ```
-
-
-**Importante:** O código fonte deve ser copiado com encoding **ISO-8859-1** para garantir a compatibilidade de caracteres especiais e evitar problemas de codificação durante a execução.
 
 ## Procedimentos para execução
 
