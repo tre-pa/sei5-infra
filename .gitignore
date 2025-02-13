@@ -2,5 +2,8 @@
 /idea/
 /.idea/
 /.idea
-/docker/init-db/*
-/docker/src/*
+docker/init-db/sei_5_0_0.sql
+docker/init-db/sip_3_2_0.sql
+/docker/src/sei/
+/docker/src/sip/
+/docker/src/infra/
