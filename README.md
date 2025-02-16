@@ -94,7 +94,7 @@ docker/src/
 
 ```sh
 ddocker/init-db/
-├── init-db/sei_5_0_0.sql
+├── docker/init-db/sei_5_0_0.sql
 └── docker/init-db/sip_3_2_0.sql
 ```
 
