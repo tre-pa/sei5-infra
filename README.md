@@ -11,55 +11,21 @@ Antes de iniciar a instalação, certifique-se de ter os seguintes requisitos at
 - **Código fonte** do SEI (sei, sip, infra)
 - **Arquivos de dump** do PostgreSQL
 
-## Como subir o ambiente SEI5:
+## 1. Construir as imagens Docker usando Docker Compose
 
-### 1. Clonar o repositório
-```sh
-git https://github.com/tre-pa/sei5-infra.git
-cd sei5-infra
+Execute o seguinte comando para construir as imagens:
+
+```bash
+docker compose build
 ```
 
-
-### 2. Build da imagem SEI5
-
-O build da imagem deve ser feito a partir da raiz do projeto. O Dockerfile está localizado na pasta sei5, então execute:
+**Nota:** Em algumas distribuições, o comando pode ser diferente. Use o seguinte, se necessário:
 
 ```sh
-docker build -t sei5-alpine:1.0.0 ./sei5
+docker-compose build
 ```
 
-### 3. Baixar a imagem do Memcached
-
-O Memcached é um serviço obtido diretamente do Docker Hub, portanto, não é necessário construir uma imagem. Para garantir que ele esteja disponível, execute:
-
-```sh
-docker pull memcached:1.6.36-alpine
-```
-
-### 4. Build da imagem do solr
-
-
-```sh
-docker build -t solr:8.2.0 ./solr
-```
-
-### 5. Build da imagem do JodConverter
-
-
-```sh
-docker build -t jodconverter-tomcat:2.2.2 ./jod
-```
-
-### 6. Build da imagem do PostgreSQL
-
-O build da imagem deve ser feito a partir da raiz do projeto. O Dockerfile está localizado na pasta `postgres`, então execute:
-
-```sh
-docker build -t sei5-postgres:1.0.0 ./postgres
-```
-
-
-## 7. Configuração do Banco de Dados
+## 2. Configuração do Banco de Dados
 
 O acesso ao banco de dados pode ser configurado no arquivo env.ini, localizado na raiz do projeto. Abaixo, seguem as variáveis disponíveis:
 
@@ -77,7 +43,7 @@ O acesso ao banco de dados pode ser configurado no arquivo env.ini, localizado n
 | `DB_SIP_PASSWORD` | Senha do banco de dados do SIP               | `sip`                   | - |
 
 
-## 8. Inserir o código fonte do SEI
+## 3. Inserir o código fonte do SEI
 
 Inserir o código fonte do sei no diretório **docker/config/src**
 
@@ -90,7 +56,7 @@ docker/src/
 
 **Importante:** O código fonte deve ser copiado com encoding **ISO-8859-1** para garantir a compatibilidade de caracteres especiais e evitar problemas de codificação durante a execução.
 
-## 9. Inserir o SQL dump do postgres no diretório **docker/config/init-db**
+## 4. Inserir o SQL dump do postgres no diretório **docker/config/init-db**
 
 ```sh
 ddocker/init-db/
@@ -98,10 +64,16 @@ ddocker/init-db/
 └── docker/init-db/sip_3_2_0.sql
 ```
 
-## Procedimentos para execução
+## 5. Como executar os containers com Docker Compose
 
-Depois de inserir o código fonte do SEI no diretório docker/src, execute o seguinte comando para iniciar os serviços com Docker Compose:
+Para executar os containers definidos no arquivo `docker-compose.yml`, use o comando:
 
-```sh
-docker-compose up -d --remove-orphans
+```bash
+docker compose up -d
+```
+
+ou
+
+```bash
+docker-compose up -d
 ```

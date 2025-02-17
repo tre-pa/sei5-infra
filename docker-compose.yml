@@ -1,6 +1,7 @@
 services:
   solr:
     image: "solr:8.2.0"
+    build: ./solr/
     container_name: solr
     restart: unless-stopped
     networks:
@@ -13,6 +14,7 @@ services:
       - ./solr_dados/sei-publicacoes:/dados/sei-publicacoes/conteudo
   jodconverter:
     image: "jodconverter-tomcat:2.2.2"
+    build: ./jod/
     container_name: jodconverter
     restart: unless-stopped
     networks:
@@ -30,6 +32,7 @@ services:
       - "11211:11211"
   sei5-postgres:
     image: "sei5-postgres:1.0.0"
+    build: ./postgres/
     container_name: sei5-postgres
     restart: always
     ports:
@@ -42,6 +45,7 @@ services:
       - internal-network
   sei5-alpine:
     image: "sei5-alpine:1.0.0"
+    build: ./sei5/
     container_name: sei5-alpine
     restart: unless-stopped
     env_file: env.ini
