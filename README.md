@@ -77,3 +77,8 @@ ou
 ```bash
 docker-compose up -d
 ```
+
+Após inicialização dos serviços, você poderá acessar (usuário/senha: teste/teste):
+
+ - localhost:8000/sei
+ - localhost:8000/sip
